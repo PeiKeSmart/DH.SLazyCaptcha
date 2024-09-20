@@ -3,7 +3,8 @@ using System.Timers;
 
 namespace DH.SLazyCaptcha.Storage.Caches;
 
-public class MemoryCache {
+public class MemoryCache
+{
     private System.Timers.Timer CacheCheckTimer;
     private ConcurrentDictionary<string, CacheEntity> Cache = new ConcurrentDictionary<string, CacheEntity>();
     public static MemoryCache Default = new MemoryCache(60);

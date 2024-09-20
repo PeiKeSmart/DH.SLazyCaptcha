@@ -1,4 +1,5 @@
-﻿using DH.SLazyCaptcha.Storage;
+﻿using DH.SLazyCaptcha.Generator;
+using DH.SLazyCaptcha.Storage;
 
 using SkiaSharp;
 
@@ -7,11 +8,12 @@ namespace DH.SLazyCaptcha;
 /// <summary>
 /// 验证服务构建器
 /// </summary>
-public class CaptchaServiceBuilder {
-    private CaptchaOptions CaptchaOptions;
-    private IStorage InnerStorage;
+public class CaptchaServiceBuilder
+{
+    private  CaptchaOptions CaptchaOptions;
+    private  IStorage InnerStorage;
 
-    public CaptchaServiceBuilder()
+    public  CaptchaServiceBuilder()
     {
         CaptchaOptions = GenerateDefaultOptions();
         InnerStorage = new MemeoryStorage();
@@ -126,7 +128,7 @@ public class CaptchaServiceBuilder {
     /// <summary>
     /// 前景色
     /// </summary>
-    /// <param name="foregroundColors"></param>
+    /// <param name="animation"></param>
     /// <returns></returns>
     public CaptchaServiceBuilder ForegroundColors(List<SKColor> foregroundColors)
     {

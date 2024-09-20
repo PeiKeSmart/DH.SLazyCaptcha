@@ -2,7 +2,8 @@
 
 namespace DH.SLazyCaptcha;
 
-internal class CaptchaBuilder : ICaptchaBuilder {
+internal class CaptchaBuilder : ICaptchaBuilder
+{
     public CaptchaBuilder(IServiceCollection services)
     {
         Services = services;

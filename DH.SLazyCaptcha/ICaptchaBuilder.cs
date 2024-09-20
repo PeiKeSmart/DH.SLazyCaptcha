@@ -2,6 +2,7 @@
 
 namespace DH.SLazyCaptcha;
 
-public interface ICaptchaBuilder {
+public interface ICaptchaBuilder
+{
     IServiceCollection Services { get; }
 }

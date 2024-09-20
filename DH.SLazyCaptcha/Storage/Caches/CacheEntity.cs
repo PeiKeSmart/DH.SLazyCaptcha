@@ -3,7 +3,8 @@
 /// <summary>
 /// 缓存实体
 /// </summary>
-public class CacheEntity {
+public class CacheEntity
+{
     /// <summary>
     /// 键
     /// </summary>

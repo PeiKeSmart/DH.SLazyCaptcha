@@ -2,7 +2,8 @@
 
 namespace DH.SLazyCaptcha.Generator.Image.Option;
 
-public class CaptchaImageGeneratorOption {
+public class CaptchaImageGeneratorOption
+{
     /// <summary>
     /// 是否启用动画
     /// </summary>
@@ -18,7 +19,7 @@ public class CaptchaImageGeneratorOption {
     /// <summary>
     /// FontFamily
     /// </summary>
-    public SKTypeface FontFamily { get; set; } = DefaultFontFamilys.Instance.Kaiti;
+    public SKTypeface FontFamily { get; set;}= DefaultFontFamilys.Instance.Kaiti;
     /// <summary>
     /// 字体大小
     /// </summary>

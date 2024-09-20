@@ -3,7 +3,8 @@ using System.Text;
 
 namespace DH.SLazyCaptcha.Generator.Code;
 
-public class DefaultCaptchaCodeGenerator : ICaptchaCodeGenerator {
+public class DefaultCaptchaCodeGenerator : ICaptchaCodeGenerator
+{
     private readonly CaptchaType _captchaType = CaptchaType.DEFAULT;
 
     private static IReadOnlyList<char> GetCharacters(CaptchaType captchaType)
@@ -32,9 +33,9 @@ public class DefaultCaptchaCodeGenerator : ICaptchaCodeGenerator {
     /// 中文操作符
     /// </summary>
     private static IReadOnlyDictionary<char, char> OPERATOR_MAP { get; } = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>()
-        {
-             { '+', '加' },  { '-', '减' }
-        });
+    {
+         { '+', '加' },  { '-', '减' }
+    });
 
 
     public DefaultCaptchaCodeGenerator() : this(CaptchaType.DEFAULT)

@@ -1,8 +1,9 @@
-﻿namespace DH.SLazyCaptcha.Generator.Extensions;
+﻿namespace DH.SLazyCaptcha;
 
-public static class ByteExtensions {
+public static class ByteExtensions
+{
     public static Stream ToStream(this byte[] bytes)
-    {
+    { 
         return new MemoryStream(bytes);
     }
 

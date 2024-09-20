@@ -1,6 +1,7 @@
-﻿namespace DH.SLazyCaptcha.Generator.Extensions;
+﻿namespace DH.SLazyCaptcha.Generator;
 
-public static class CaptchaTypeExtensions {
+public static class CaptchaTypeExtensions
+{
     public static bool ContainsChinese(this CaptchaType captchaType)
     {
         return captchaType == CaptchaType.ARITHMETIC_ZH ||

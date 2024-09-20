@@ -1,7 +1,8 @@
 ﻿using DH.SLazyCaptcha.Generator.Image.Option;
 
-namespace DH.SLazyCaptcha.Generator;
+namespace DH.SLazyCaptcha.Generator.Image;
 
-public interface ICaptchaImageOptionBuilder {
+public interface ICaptchaImageOptionBuilder
+{
     CaptchaImageGeneratorOption Build();
 }

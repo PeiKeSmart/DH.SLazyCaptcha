@@ -1,5 +1,5 @@
-﻿using DH.SLazyCaptcha.Generator;
-using DH.SLazyCaptcha.Generator.Code;
+﻿using DH.SLazyCaptcha.Generator.Code;
+using DH.SLazyCaptcha.Generator.Image;
 using DH.SLazyCaptcha.Storage;
 
 using Microsoft.AspNetCore.Http;
@@ -7,7 +7,8 @@ using Microsoft.Extensions.Options;
 
 namespace DH.SLazyCaptcha;
 
-public class DefaultCaptcha : ICaptcha {
+public class DefaultCaptcha : ICaptcha
+{
     protected CaptchaOptions _options;
     protected IStorage _storage;
     protected ICaptchaCodeGenerator _captchaCodeGenerator;

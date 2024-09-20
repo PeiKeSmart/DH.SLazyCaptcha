@@ -8,7 +8,8 @@ namespace DH.SLazyCaptcha.Controllers;
 /// 验证码控制器
 /// </summary>
 [ApiExplorerSettings(IgnoreApi = true)]
-public partial class CaptChaController : Controller {
+public partial class CaptChaController : Controller
+{
 
     public readonly ICaptcha Captcha;
 

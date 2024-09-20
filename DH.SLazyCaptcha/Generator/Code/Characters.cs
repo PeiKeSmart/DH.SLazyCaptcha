@@ -2,7 +2,8 @@
 
 namespace DH.SLazyCaptcha.Generator.Code;
 
-public static class Characters {
+public static class Characters
+{
     /// <summary>
     /// 小写英文字符
     /// </summary>

@@ -3,7 +3,8 @@
 /// <summary>
 /// 验证码帮助类
 /// </summary>
-public class CaptchaHelper {
+public class CaptchaHelper
+{
     private static CaptchaService CaptchaService;
 
     public static void Initialization(CaptchaService captchaService)
@@ -28,9 +29,10 @@ public class CaptchaHelper {
     /// <param name="captchaId">验证码id</param>
     /// <param name="code">用户输入的验证码</param>
     /// <param name="removeIfSuccess">校验成功时是否移除缓存(用于多次验证)</param>
+    /// <param name="removeIfFail">校验失败时是否移除缓存</param>
     /// <returns></returns>
-    public static bool Validate(string captchaId, string code, bool removeIfSuccess = true)
+    public static bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true)
     {
-        return CaptchaService.Validate(captchaId, code, removeIfSuccess);
+        return CaptchaService.Validate(captchaId, code, removeIfSuccess, removeIfFail);
     }
 }

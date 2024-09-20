@@ -1,6 +1,7 @@
 ﻿namespace DH.SLazyCaptcha.Generator.Image.Gif;
 
-public class LZWEncoder {
+public class LZWEncoder
+{
 
     private static readonly int EOF = -1;
 
@@ -85,23 +86,23 @@ public class LZWEncoder {
 
     int[] masks =
     {
-            0x0000,
-            0x0001,
-            0x0003,
-            0x0007,
-            0x000F,
-            0x001F,
-            0x003F,
-            0x007F,
-            0x00FF,
-            0x01FF,
-            0x03FF,
-            0x07FF,
-            0x0FFF,
-            0x1FFF,
-            0x3FFF,
-            0x7FFF,
-            0xFFFF };
+        0x0000,
+        0x0001,
+        0x0003,
+        0x0007,
+        0x000F,
+        0x001F,
+        0x003F,
+        0x007F,
+        0x00FF,
+        0x01FF,
+        0x03FF,
+        0x07FF,
+        0x0FFF,
+        0x1FFF,
+        0x3FFF,
+        0x7FFF,
+        0xFFFF };
 
     // Number of characters so far in this 'packet'
     int a_count;

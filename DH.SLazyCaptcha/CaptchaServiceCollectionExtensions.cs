@@ -1,13 +1,15 @@
-﻿using DH.SLazyCaptcha.Storage;
+﻿using DH.SLazyCaptcha;
+using DH.SLazyCaptcha.Storage;
+using DH.SLazyCaptcha.Storeage;
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 using SkiaSharp;
 
-namespace DH.SLazyCaptcha;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class CaptchaServiceCollectionExtensions {
+public static class CaptchaServiceCollectionExtensions
+{
     public static IServiceCollection AddCaptcha(this IServiceCollection services)
     {
         return AddCaptcha(services, null);
@@ -16,7 +18,7 @@ public static class CaptchaServiceCollectionExtensions {
     public static IServiceCollection AddCaptcha(this IServiceCollection services, Action<CaptchaOptions> optionsAction)
     {
         var factory = services.FirstOrDefault(p => p.ServiceType == typeof(IConfiguration));
-        IConfiguration configuration = (IConfiguration)factory.ImplementationFactory(null);
+        var configuration = (IConfiguration)factory.ImplementationFactory(null);
         return AddCaptcha(services, configuration, optionsAction);
     }
 

@@ -1,10 +1,11 @@
-﻿using DH.SLazyCaptcha.Generator;
-using DH.SLazyCaptcha.Generator.Code;
+﻿using DH.SLazyCaptcha.Generator.Code;
+using DH.SLazyCaptcha.Generator.Image;
 using DH.SLazyCaptcha.Storage;
 
 namespace DH.SLazyCaptcha;
 
-public class CaptchaService {
+public class CaptchaService
+{
     private readonly CaptchaOptions CaptchaOptions;
     private readonly IStorage Storage;
 
@@ -53,6 +54,7 @@ public class CaptchaService {
     /// <param name="captchaId">验证码id</param>
     /// <param name="code">用户输入的验证码</param>
     /// <param name="removeIfSuccess">校验成功时是否移除缓存(用于多次验证)</param>
+    /// <param name="removeIfFail">校验失败时是否移除缓存</param>
     /// <returns></returns>
     public virtual bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true)
     {

@@ -1,10 +1,11 @@
-﻿using SkiaSharp;
+﻿using System.Drawing;
 
-using System.Drawing;
+using SkiaSharp;
 
 namespace DH.SLazyCaptcha.Generator.Image.Models;
 
-public class TextGraphicDescription {
+public class TextGraphicDescription
+{
     public string Text { get; set; }
     public SKTypeface Font { get; set; }
     public SKColor Color { get; set; }

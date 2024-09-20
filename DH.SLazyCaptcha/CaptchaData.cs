@@ -1,6 +1,7 @@
 ﻿namespace DH.SLazyCaptcha;
 
-public class CaptchaData {
+public class CaptchaData
+{
     public CaptchaData(string id, string code, byte[] bytes)
     {
         Id = id;

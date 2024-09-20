@@ -1,6 +1,7 @@
 ﻿namespace DH.SLazyCaptcha.Generator.Image.Gif;
 
-public class NeuQuant {
+public class NeuQuant
+{
     protected static readonly int netsize = 256; /* number of colours used */
     /* four primes near 500 - assume no image has a length so large */
     /* that it is divisible by all four primes */
@@ -11,19 +12,19 @@ public class NeuQuant {
     protected static readonly int minpicturebytes = (3 * prime4);
     /* minimum size for input image */
     /* Program Skeleton
-       ----------------
-       [select samplefac in range 1..30]
-       [read image from input file]
-       pic = (unsigned char*) malloc(3*width*height);
-       initnet(pic,3*width*height,samplefac);
-       learn();
-       unbiasnet();
-       [write output image header, using writecolourmap(f)]
-       inxbuild();
-       write output image using inxsearch(b,g,r)      */
+		   ----------------
+		   [select samplefac in range 1..30]
+		   [read image from input file]
+		   pic = (unsigned char*) malloc(3*width*height);
+		   initnet(pic,3*width*height,samplefac);
+		   learn();
+		   unbiasnet();
+		   [write output image header, using writecolourmap(f)]
+		   inxbuild();
+		   write output image using inxsearch(b,g,r)      */
 
     /* Network Definitions
-       ------------------- */
+		   ------------------- */
     protected static readonly int maxnetpos = (netsize - 1);
     protected static readonly int netbiasshift = 4; /* bias for colour values */
     protected static readonly int ncycles = 100; /* no. of learning cycles */
@@ -58,7 +59,7 @@ public class NeuQuant {
     protected static readonly int alpharadbias = (((int)1) << alpharadbshift);
 
     /* Types and Global Variables
-    -------------------------- */
+		-------------------------- */
 
     protected byte[] thepicture; /* the input image itself */
     protected int lengthcount; /* lengthcount = H*W*3 */
@@ -78,7 +79,7 @@ public class NeuQuant {
     /* radpower for precomputation */
 
     /* Initialise network in range (0,0,0) to (255,255,255) and set parameters
-       ----------------------------------------------------------------------- */
+		   ----------------------------------------------------------------------- */
     public NeuQuant(byte[] thepic, int len, int sample)
     {
 
@@ -118,7 +119,7 @@ public class NeuQuant {
     }
 
     /* Insertion sort of network and building of netindex[0..255] (to do after unbias)
-       ------------------------------------------------------------------------------- */
+		   ------------------------------------------------------------------------------- */
     public void Inxbuild()
     {
 
@@ -177,7 +178,7 @@ public class NeuQuant {
     }
 
     /* Main Learning Loop
-       ------------------ */
+		   ------------------ */
     public void Learn()
     {
 
@@ -258,7 +259,7 @@ public class NeuQuant {
     }
 
     /* Search for BGR values 0..255 (after net is unbiased) and return colour index
-       ---------------------------------------------------------------------------- */
+		   ---------------------------------------------------------------------------- */
     public int Map(int b, int g, int r)
     {
 
@@ -343,7 +344,7 @@ public class NeuQuant {
     }
 
     /* Unbias network to give byte values 0..255 and record position i to prepare for sort
-       ----------------------------------------------------------------------------------- */
+		   ----------------------------------------------------------------------------------- */
     public void Unbiasnet()
     {
 
@@ -359,7 +360,7 @@ public class NeuQuant {
     }
 
     /* Move adjacent neurons by precomputed alpha*(1-((i-j)^2/[r]^2)) in radpower[|i-j|]
-       --------------------------------------------------------------------------------- */
+		   --------------------------------------------------------------------------------- */
     protected void Alterneigh(int rad, int i, int b, int g, int r)
     {
 
@@ -409,7 +410,7 @@ public class NeuQuant {
     }
 
     /* Move neuron i towards biased (b,g,r) by factor alpha
-       ---------------------------------------------------- */
+		   ---------------------------------------------------- */
     protected void Altersingle(int alpha, int i, int b, int g, int r)
     {
 
@@ -421,7 +422,7 @@ public class NeuQuant {
     }
 
     /* Search for biased BGR values
-       ---------------------------- */
+		   ---------------------------- */
     protected int Contest(int b, int g, int r)
     {
 

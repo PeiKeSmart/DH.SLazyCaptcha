@@ -2,7 +2,8 @@
 
 namespace DH.SLazyCaptcha.Storage;
 
-public class MemeoryStorage : IStorage {
+public class MemeoryStorage : IStorage
+{
     private MemoryCache Cache;
     public string StoreageKeyPrefix { get; set; } = string.Empty;
 

@@ -1,6 +1,7 @@
 ﻿namespace DH.SLazyCaptcha;
 
-public interface ICaptcha {
+public interface ICaptcha
+{
     /// <summary>
     /// 使用session及固定Key
     /// </summary>

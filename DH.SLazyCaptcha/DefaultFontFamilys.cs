@@ -1,25 +1,27 @@
-﻿using SkiaSharp;
-using System.Reflection;
+﻿using System.Reflection;
+
+using SkiaSharp;
 
 namespace DH.SLazyCaptcha;
 
-public class DefaultFontFamilys {
+public class DefaultFontFamilys
+{
     public static DefaultFontFamilys Instance = new DefaultFontFamilys();
     private static List<SKTypeface> _fontFamilies = null;
     private static Dictionary<string, string> FamilyNameMapper = new Dictionary<string, string>
-        {
-            { "actionj", "Action Jackson" },
-            { "epilog", "Epilog" },
-            { "fresnel", "Fresnel" },
-            { "headache", "Tom's Headache" },
-            { "lexo", "Lexographer" },
-            { "prefix", "Prefix" },
-            { "progbot", "PROG.BOT" },
-            { "ransom", "Ransom" },
-            { "robot", "Robot Teacher" },
-            { "scandal", "Potassium Scandal" },
-            { "kaiti", "FZKai-Z03" }
-        };
+    {
+        { "actionj", "Action Jackson" },
+        { "epilog", "Epilog" },
+        { "fresnel", "Fresnel" },
+        { "headache", "Tom's Headache" },
+        { "lexo", "Lexographer" },
+        { "prefix", "Prefix" },
+        { "progbot", "PROG.BOT" },
+        { "ransom", "Ransom" },
+        { "robot", "Robot Teacher" },
+        { "scandal", "Potassium Scandal" },
+        { "kaiti", "FZKai-Z03" }
+    };
 
     static DefaultFontFamilys()
     {

@@ -1,9 +1,10 @@
-﻿using DH.SLazyCaptcha.Generator.Extensions;
+﻿using DH.SLazyCaptcha.Generator;
 using DH.SLazyCaptcha.Generator.Image.Option;
 
 namespace DH.SLazyCaptcha;
 
-public class CaptchaOptions {
+public class CaptchaOptions
+{
     private const int DEFAULT_CODE_LENGTH = 4;
     private CaptchaType _captchaType = CaptchaType.DEFAULT;
 
@@ -18,15 +19,15 @@ public class CaptchaOptions {
             if (value.IsArithmetic())
             {
                 // 当是4时，长度重置为2。不过四位数的运算用户体验不佳，因此不必在意这个bug。
-                if (this.CodeLength == DEFAULT_CODE_LENGTH)
+                if (CodeLength == DEFAULT_CODE_LENGTH)
                 {
-                    this.CodeLength = 2;
+                    CodeLength = 2;
                 }
             }
 
             if (value.ContainsChinese())
             {
-                this.ImageOption.FontFamily = DefaultFontFamilys.Instance.Kaiti;
+                ImageOption.FontFamily = DefaultFontFamilys.Instance.Kaiti;
             }
 
             _captchaType = value;

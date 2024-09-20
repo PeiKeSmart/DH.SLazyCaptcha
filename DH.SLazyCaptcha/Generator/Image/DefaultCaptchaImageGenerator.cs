@@ -1,17 +1,20 @@
-﻿using DH.SLazyCaptcha.Generator.Image.Gif;
+﻿using System.Drawing;
+
+using DH.SLazyCaptcha.Generator.Image.Gif;
 using DH.SLazyCaptcha.Generator.Image.Models;
 using DH.SLazyCaptcha.Generator.Image.Option;
 
+using LDH.SLazyCaptcha.Generator.Image.Models;
+
 using SkiaSharp;
 
-using System.Drawing;
-
-namespace DH.SLazyCaptcha.Generator;
+namespace DH.SLazyCaptcha.Generator.Image;
 
 /// <summary>
 /// 验证码生成器基类
 /// </summary>
-public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
+public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator
+{
     private static readonly ThreadLocal<Random> ThreadRandom = new(() => new Random());
     private static Random Random => ThreadRandom.Value;
 
@@ -68,6 +71,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <param name="minRadius"></param>
     /// <param name="maxRadius"></param>
     /// <param name="thickness"></param>
+    /// <param name="foregroundColors"></param>
     /// <returns></returns>
     protected virtual List<BubbleGraphicDescription> GenerateBubbleGraphicDescriptions(int width, int height, int count, int minRadius, int maxRadius, float thickness, IEnumerable<SKColor> foregroundColors)
     {
@@ -95,7 +99,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// 绘制多个气泡
     /// </summary>
     /// <param name="canvas">canvas</param>
-    /// <param name="bubbleGraphicDescriptions">气泡图形描述</param>
+    /// <param name="graphicDescriptions">气泡图形描述</param>
     protected virtual void DrawBubbles(SKCanvas canvas, List<BubbleGraphicDescription> graphicDescriptions)
     {
         graphicDescriptions.ForEach(gd =>
@@ -128,6 +132,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <param name="width">宽</param>
     /// <param name="height">高</param>
     /// <param name="count">数量</param>
+    /// <param name="foregroundColors"></param>
     /// <returns>干扰线图形描述</returns>
     protected virtual List<InterferenceLineGraphicDescription> GenerateInterferenceLineGraphicDescriptions(int width, int height, int count, IEnumerable<SKColor> foregroundColors)
     {
@@ -157,8 +162,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// 绘制干扰线
     /// </summary>
     /// <param name="canvas">canvas</param>
-    /// <param name="width">验证码的宽</param>
-    /// <param name="height">验证码的高</param>
+    /// <param name="graphicDescriptions"></param>
     protected virtual void DrawInterferenceLines(SKCanvas canvas, List<InterferenceLineGraphicDescription> graphicDescriptions)
     {
         graphicDescriptions.ForEach(gd =>
@@ -184,7 +188,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// 绘制干扰线
     /// </summary>
     /// <param name="canvas">canvas</param>
-    /// <param name="width">option</param>
+    /// <param name="option">option</param>
     protected virtual void DrawInterferenceLines(SKCanvas canvas, CaptchaImageGeneratorOption option)
     {
         var graphicDescriptions = GenerateInterferenceLineGraphicDescriptions(option.Width, option.Height, option.InterferenceLineCount, option.ForegroundColors);
@@ -200,6 +204,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <param name="font">字体</param>
     /// <param name="fontSize">字体大小</param>
     /// <param name="textBold">是否粗体</param>
+    /// <param name="foregroundColors"></param>
     /// <returns>文本图形描述</returns>
     protected virtual List<TextGraphicDescription> GenerateTextGraphicDescriptions(int width, int height, string text, SKTypeface font, float fontSize, IEnumerable<SKColor> foregroundColors, bool textBold)
     {
@@ -226,7 +231,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <summary>
     /// 绘制干扰线
     /// </summary>
-    /// <param name="ctx">上下文</param>
+    /// <param name="canvas"></param>
     /// <param name="graphicDescriptions">图形描述</param>
     protected virtual void DrawTexts(SKCanvas canvas, List<TextGraphicDescription> graphicDescriptions)
     {
@@ -248,7 +253,7 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <summary>
     /// 绘制文本
     /// </summary>
-    /// <param name="ctx">上下文</param>
+    /// <param name="canvas"></param>
     /// <param name="text"></param>
     /// <param name="option"></param>
     protected virtual void DrawTexts(SKCanvas canvas, string text, CaptchaImageGeneratorOption option)
@@ -263,7 +268,8 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator {
     /// <param name="width">验证码宽度</param>
     /// <param name="height">验证码高度</param>
     /// <param name="text">要绘制的文本</param>
-    /// <param name="paint">画笔</param>
+    /// <param name="font"></param>
+    /// <param name="fontSize"></param>
     /// <returns>返回每个字符的位置</returns>
     public virtual List<PointF> MeasureTextPositions(int width, int height, string text, SKTypeface font, float fontSize)
     {

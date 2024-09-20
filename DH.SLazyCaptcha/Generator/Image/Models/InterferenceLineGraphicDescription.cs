@@ -2,7 +2,8 @@
 
 namespace DH.SLazyCaptcha.Generator.Image.Models;
 
-public class InterferenceLineGraphicDescription {
+public class InterferenceLineGraphicDescription
+{
     public SKColor Color { get; set; }
     public SKPoint Start { get; set; }
     public SKPoint Ctrl1 { get; set; }

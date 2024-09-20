@@ -41,14 +41,8 @@ namespace DH.SLazyCaptcha.Generator.Image.Gif;
  */
 #endregion
 
-#region Modified By Phil Garcia
-/* 
- * Modified by Phil Garcia (phil@thinkedge.com) 
-    1. Add support to output the Gif to a MemoryStream (9/2/2005)
-
-*/
-#endregion
-public class AnimatedGifEncoder {
+public class AnimatedGifEncoder
+{
     protected int width; // image size
     protected int height;
     protected SKColor transparent = SKColor.Empty; // transparent color if given
@@ -147,7 +141,7 @@ public class AnimatedGifEncoder {
         {
             return false;
         }
-        bool ok = true;
+        var ok = true;
         try
         {
             if (!sizeSet)
@@ -193,7 +187,7 @@ public class AnimatedGifEncoder {
     public bool Finish()
     {
         if (!started) return false;
-        bool ok = true;
+        var ok = true;
         started = false;
         try
         {
@@ -282,7 +276,7 @@ public class AnimatedGifEncoder {
     public bool Start(MemoryStream os)
     {
         if (os == null) return false;
-        bool ok = true;
+        var ok = true;
         closeStream = false;
         ms = os;
         try
@@ -303,7 +297,7 @@ public class AnimatedGifEncoder {
      */
     public bool Start()
     {
-        bool ok = true;
+        var ok = true;
         try
         {
             ok = Start(new MemoryStream(10 * 1024));
@@ -325,7 +319,7 @@ public class AnimatedGifEncoder {
     {
         try
         {
-            FileStream fs = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            var fs = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
             fs.Write(ms.ToArray(), 0, (int)ms.Length);
             fs.Close();
         }
@@ -346,10 +340,10 @@ public class AnimatedGifEncoder {
      */
     protected void AnalyzePixels()
     {
-        int len = pixels.Length;
-        int nPix = len / 3;
+        var len = pixels.Length;
+        var nPix = len / 3;
         indexedPixels = new byte[nPix];
-        NeuQuant nq = new NeuQuant(pixels, len, sample);
+        var nq = new NeuQuant(pixels, len, sample);
         // initialize quantizer
         colorTab = nq.Process(); // create reduced palette
                                  // convert map from BGR to RGB
@@ -361,10 +355,10 @@ public class AnimatedGifEncoder {
                                  //				usedEntry[i / 3] = false;
                                  //			}
                                  // map image pixels to new palette
-        int k = 0;
-        for (int i = 0; i < nPix; i++)
+        var k = 0;
+        for (var i = 0; i < nPix; i++)
         {
-            int index =
+            var index =
                 nq.Map(pixels[k++] & 0xff,
                 pixels[k++] & 0xff,
                 pixels[k++] & 0xff);
@@ -392,16 +386,16 @@ public class AnimatedGifEncoder {
         int r = c.Red;
         int g = c.Green;
         int b = c.Blue;
-        int minpos = 0;
-        int dmin = 256 * 256 * 256;
-        int len = colorTab.Length;
-        for (int i = 0; i < len;)
+        var minpos = 0;
+        var dmin = 256 * 256 * 256;
+        var len = colorTab.Length;
+        for (var i = 0; i < len;)
         {
-            int dr = r - (colorTab[i++] & 0xff);
-            int dg = g - (colorTab[i++] & 0xff);
-            int db = b - (colorTab[i] & 0xff);
-            int d = dr * dr + dg * dg + db * db;
-            int index = i / 3;
+            var dr = r - (colorTab[i++] & 0xff);
+            var dg = g - (colorTab[i++] & 0xff);
+            var db = b - (colorTab[i] & 0xff);
+            var d = dr * dr + dg * dg + db * db;
+            var index = i / 3;
             if (usedEntry[index] && (d < dmin))
             {
                 dmin = d;
@@ -417,8 +411,8 @@ public class AnimatedGifEncoder {
      */
     protected void GetImagePixels()
     {
-        int w = image.Width;
-        int h = image.Height;
+        var w = image.Width;
+        var h = image.Height;
         //		int type = image.GetType().;
         if ((w != width) || (h != height))
         {
@@ -437,13 +431,13 @@ public class AnimatedGifEncoder {
             improve performance: use unsafe code 
         */
         pixels = new Byte[3 * image.Width * image.Height];
-        int count = 0;
-        SKBitmap tempBitmap = SKBitmap.FromImage(image);
-        for (int th = 0; th < image.Height; th++)
+        var count = 0;
+        var tempBitmap = SKBitmap.FromImage(image);
+        for (var th = 0; th < image.Height; th++)
         {
-            for (int tw = 0; tw < image.Width; tw++)
+            for (var tw = 0; tw < image.Width; tw++)
             {
-                SKColor color = tempBitmap.GetPixel(tw, th);
+                var color = tempBitmap.GetPixel(tw, th);
                 pixels[count] = color.Red;
                 count++;
                 pixels[count] = color.Green;
@@ -559,8 +553,8 @@ public class AnimatedGifEncoder {
     protected void WritePalette()
     {
         ms.Write(colorTab, 0, colorTab.Length);
-        int n = (3 * 256) - colorTab.Length;
-        for (int i = 0; i < n; i++)
+        var n = (3 * 256) - colorTab.Length;
+        for (var i = 0; i < n; i++)
         {
             ms.WriteByte(0);
         }
@@ -571,7 +565,7 @@ public class AnimatedGifEncoder {
      */
     protected void WritePixels()
     {
-        LZWEncoder encoder =
+        var encoder =
             new LZWEncoder(width, height, indexedPixels, colorDepth);
         encoder.Encode(ms);
     }
@@ -590,8 +584,8 @@ public class AnimatedGifEncoder {
      */
     protected void WriteString(String s)
     {
-        char[] chars = s.ToCharArray();
-        for (int i = 0; i < chars.Length; i++)
+        var chars = s.ToCharArray();
+        for (var i = 0; i < chars.Length; i++)
         {
             ms.WriteByte((byte)chars[i]);
         }

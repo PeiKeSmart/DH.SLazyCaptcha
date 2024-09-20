@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using DH.SLazyCaptcha.Storage;
+
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
-namespace DH.SLazyCaptcha.Storage;
+namespace DH.SLazyCaptcha.Storeage;
 
-public class DefaultStorage : IStorage {
+public class DefaultStorage : IStorage
+{
     private readonly IDistributedCache _cache;
     private readonly IOptionsMonitor<CaptchaOptions> _options;
 
@@ -15,7 +18,7 @@ public class DefaultStorage : IStorage {
 
     private string WrapKey(string key)
     {
-        return $"{this._options.CurrentValue.StoreageKeyPrefix}{key}";
+        return $"{_options.CurrentValue.StoreageKeyPrefix}{key}";
     }
 
     public string Get(string key)
