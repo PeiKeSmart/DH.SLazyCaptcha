@@ -1,187 +1,184 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
+
 using SkiaSharp;
 
-namespace Lazy.Captcha.Core
+namespace DH.SLazyCaptcha;
+
+public class DefaultFontFamilys
 {
-    public class DefaultFontFamilys
+    public static DefaultFontFamilys Instance = new DefaultFontFamilys();
+    private static List<SKTypeface> _fontFamilies = null;
+    private static Dictionary<string, string> FamilyNameMapper = new Dictionary<string, string>
     {
-        public static DefaultFontFamilys Instance = new DefaultFontFamilys();
-        private static List<SKTypeface> _fontFamilies = null;
-        private static Dictionary<string, string> FamilyNameMapper = new Dictionary<string, string>
-        {
-            { "actionj", "Action Jackson" },
-            { "epilog", "Epilog" },
-            { "fresnel", "Fresnel" },
-            { "headache", "Tom's Headache" },
-            { "lexo", "Lexographer" },
-            { "prefix", "Prefix" },
-            { "progbot", "PROG.BOT" },
-            { "ransom", "Ransom" },
-            { "robot", "Robot Teacher" },
-            { "scandal", "Potassium Scandal" },
-            { "kaiti", "FZKai-Z03" }
-        };
+        { "actionj", "Action Jackson" },
+        { "epilog", "Epilog" },
+        { "fresnel", "Fresnel" },
+        { "headache", "Tom's Headache" },
+        { "lexo", "Lexographer" },
+        { "prefix", "Prefix" },
+        { "progbot", "PROG.BOT" },
+        { "ransom", "Ransom" },
+        { "robot", "Robot Teacher" },
+        { "scandal", "Potassium Scandal" },
+        { "kaiti", "FZKai-Z03" }
+    };
 
-        static DefaultFontFamilys()
+    static DefaultFontFamilys()
+    {
+        if (_fontFamilies == null)
         {
-            if (_fontFamilies == null)
+            var assembly = Assembly.GetExecutingAssembly();
+            var names = assembly.GetManifestResourceNames();
+            _fontFamilies = new List<SKTypeface>();
+
+            if (names?.Length > 0 == true)
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var names = assembly.GetManifestResourceNames();
-                _fontFamilies = new List<SKTypeface>();
-
-                if (names?.Length > 0 == true)
+                foreach (var name in names)
                 {
-                    foreach (var name in names)
-                    {
-                        _fontFamilies.Add(SKTypeface.FromStream(assembly.GetManifestResourceStream(name)));
-                    }
-                }
-                else
-                {
-                    throw new Exception($"绘制验证码字体文件加载失败");
+                    _fontFamilies.Add(SKTypeface.FromStream(assembly.GetManifestResourceStream(name)));
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取字体
-        /// </summary>
-        public SKTypeface GetFontFamily(string name)
-        {
-            var realName = "Epilog";
-            var normalizeName = name.ToLowerInvariant();
-            if (FamilyNameMapper.ContainsKey(normalizeName))
+            else
             {
-                // 默认字体
-                realName = FamilyNameMapper[normalizeName];
-            }
-            // 改用StartsWith, 某些环境下： Prefix取到的值为Prefix Endangered, Ransom取到的值为Ransom CutUpLetters
-            return _fontFamilies.First(f => f.FamilyName.StartsWith(realName));
-        }
-
-        /// <summary>
-        /// ACTIONJ
-        /// </summary>
-        public SKTypeface Actionj
-        {
-            get
-            {
-                return GetFontFamily("Actionj");
+                throw new Exception($"绘制验证码字体文件加载失败");
             }
         }
+    }
 
-        /// <summary>
-        /// Epilog
-        /// </summary>
-        public SKTypeface Epilog
+    /// <summary>
+    /// 获取字体
+    /// </summary>
+    public SKTypeface GetFontFamily(string name)
+    {
+        var realName = "Epilog";
+        var normalizeName = name.ToLowerInvariant();
+        if (FamilyNameMapper.ContainsKey(normalizeName))
         {
-            get
-            {
-                return GetFontFamily("Epilog");
-            }
+            // 默认字体
+            realName = FamilyNameMapper[normalizeName];
         }
+        // 改用StartsWith, 某些环境下： Prefix取到的值为Prefix Endangered, Ransom取到的值为Ransom CutUpLetters
+        return _fontFamilies.First(f => f.FamilyName.StartsWith(realName));
+    }
 
-        /// <summary>
-        /// Fresnel
-        /// </summary>
-        public SKTypeface Fresnel
+    /// <summary>
+    /// ACTIONJ
+    /// </summary>
+    public SKTypeface Actionj
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Fresnel");
-            }
+            return GetFontFamily("Actionj");
         }
+    }
 
-        /// <summary>
-        /// headache
-        /// </summary>
-        public SKTypeface Headache
+    /// <summary>
+    /// Epilog
+    /// </summary>
+    public SKTypeface Epilog
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Headache");
-            }
+            return GetFontFamily("Epilog");
         }
+    }
 
-        /// <summary>
-        /// Lexo
-        /// </summary>
-        public SKTypeface Lexo
+    /// <summary>
+    /// Fresnel
+    /// </summary>
+    public SKTypeface Fresnel
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Lexo");
-            }
+            return GetFontFamily("Fresnel");
         }
+    }
 
-        /// <summary>
-        /// Prefix
-        /// </summary>
-        public SKTypeface Prefix
+    /// <summary>
+    /// headache
+    /// </summary>
+    public SKTypeface Headache
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Prefix");
-            }
+            return GetFontFamily("Headache");
         }
+    }
 
-        /// <summary>
-        /// Progbot
-        /// </summary>
-        public SKTypeface Progbot
+    /// <summary>
+    /// Lexo
+    /// </summary>
+    public SKTypeface Lexo
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Progbot");
-            }
+            return GetFontFamily("Lexo");
         }
+    }
 
-        /// <summary>
-        /// Ransom
-        /// </summary>
-        public SKTypeface Ransom
+    /// <summary>
+    /// Prefix
+    /// </summary>
+    public SKTypeface Prefix
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Ransom");
-            }
+            return GetFontFamily("Prefix");
         }
+    }
 
-        /// <summary>
-        /// Robot
-        /// </summary>
-        public SKTypeface Robot
+    /// <summary>
+    /// Progbot
+    /// </summary>
+    public SKTypeface Progbot
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Robot");
-            }
+            return GetFontFamily("Progbot");
         }
+    }
 
-        /// <summary>
-        /// Scandal
-        /// </summary>
-        public SKTypeface Scandal
+    /// <summary>
+    /// Ransom
+    /// </summary>
+    public SKTypeface Ransom
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Scandal");
-            }
+            return GetFontFamily("Ransom");
         }
+    }
 
-        /// <summary>
-        /// 楷体
-        /// </summary>
-        public SKTypeface Kaiti
+    /// <summary>
+    /// Robot
+    /// </summary>
+    public SKTypeface Robot
+    {
+        get
         {
-            get
-            {
-                return GetFontFamily("Kaiti");
-            }
+            return GetFontFamily("Robot");
+        }
+    }
+
+    /// <summary>
+    /// Scandal
+    /// </summary>
+    public SKTypeface Scandal
+    {
+        get
+        {
+            return GetFontFamily("Scandal");
+        }
+    }
+
+    /// <summary>
+    /// 楷体
+    /// </summary>
+    public SKTypeface Kaiti
+    {
+        get
+        {
+            return GetFontFamily("Kaiti");
         }
     }
 }

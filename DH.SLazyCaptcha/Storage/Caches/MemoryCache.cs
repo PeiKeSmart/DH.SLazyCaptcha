@@ -1,83 +1,77 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using System.Timers;
 
-namespace Lazy.Captcha.Core.Storage.Caches
+namespace DH.SLazyCaptcha.Storage.Caches;
+
+public class MemoryCache
 {
-    public class MemoryCache
+    private System.Timers.Timer CacheCheckTimer;
+    private ConcurrentDictionary<string, CacheEntity> Cache = new ConcurrentDictionary<string, CacheEntity>();
+    public static MemoryCache Default = new MemoryCache(60);
+
+    public MemoryCache(int checkCacheIntervalInSecs)
     {
-        private System.Timers.Timer CacheCheckTimer;
-        private ConcurrentDictionary<string, CacheEntity> Cache = new ConcurrentDictionary<string, CacheEntity>();
-        public static MemoryCache Default = new MemoryCache(60);
+        CacheCheckTimer = new System.Timers.Timer();
+        CacheCheckTimer.Interval = checkCacheIntervalInSecs * 1000;
+        CacheCheckTimer.Elapsed += CacheCheckTimer_Elapsed;
+        CacheCheckTimer.Start();
+    }
 
-        public MemoryCache(int checkCacheIntervalInSecs)
+    public string Get(string key)
+    {
+        if (Cache.TryGetValue(key, out var data))
         {
-            CacheCheckTimer = new System.Timers.Timer();
-            CacheCheckTimer.Interval = checkCacheIntervalInSecs * 1000;
-            CacheCheckTimer.Elapsed += CacheCheckTimer_Elapsed;
-            CacheCheckTimer.Start();
-        }
-
-        public string Get(string key)
-        {
-            if (Cache.TryGetValue(key, out var data))
+            if (data.IsExpired)
             {
-                if (data.IsExpired)
-                {
-                    Cache.TryRemove(key, out var _);
-                    return null;
-                }
-                return data.Value;
+                Cache.TryRemove(key, out var _);
+                return null;
             }
-            return null;
+            return data.Value;
         }
+        return null;
+    }
 
-        public void Remove(string key)
+    public void Remove(string key)
+    {
+        Cache.TryRemove(key, out var _);
+    }
+
+    public void Set(string key, string value, DateTimeOffset absoluteExpiration)
+    {
+        var data = new CacheEntity(key, value);
+        data.AbsoluteExpiration = absoluteExpiration;
+
+        Cache.TryRemove(key, out _);
+        Cache.TryAdd(key, data);
+    }
+
+    /// <summary>
+    /// 过期检测
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    private void CacheCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
+    {
+        Task.Run(() =>
         {
-            Cache.TryRemove(key, out var _);
-        }
-
-        public void Set(string key, string value, DateTimeOffset absoluteExpiration)
-        {
-            var data = new CacheEntity(key, value);
-            data.AbsoluteExpiration = absoluteExpiration;
-
-            Cache.TryRemove(key, out _);
-            Cache.TryAdd(key, data);
-        }
-
-        /// <summary>
-        /// 过期检测
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        private void CacheCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            Task.Run(() =>
+            try
             {
-                try
+                foreach (string cacheKey in Cache.Keys)
                 {
-                    foreach (string cacheKey in Cache.Keys)
+                    if (Cache.TryGetValue(cacheKey, out var data))
                     {
-                        if (Cache.TryGetValue(cacheKey, out var data))
+                        if (data.IsExpired)
                         {
-                            if (data.IsExpired)
-                            {
-                                Cache.TryRemove(cacheKey, out var _);
-                            }
+                            Cache.TryRemove(cacheKey, out var _);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            });
-        }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        });
     }
 }

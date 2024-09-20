@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DH.SLazyCaptcha.Generator.Code;
 
-namespace Lazy.Captcha.Core.Generator.Code
+public interface ICaptchaCodeGenerator
 {
-    public interface ICaptchaCodeGenerator
-    {
-        (string renderText, string code) Generate(int length);
-    }
+    (string renderText, string code) Generate(int length);
 }

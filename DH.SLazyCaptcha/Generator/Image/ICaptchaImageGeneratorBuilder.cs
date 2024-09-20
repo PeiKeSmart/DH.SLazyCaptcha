@@ -1,15 +1,8 @@
-﻿using Lazy.Captcha.Core.Generator;
-using Lazy.Captcha.Core.Generator.Image.Option;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DH.SLazyCaptcha.Generator.Image.Option;
 
-namespace Lazy.Captcha.Core.Generator.Image
+namespace DH.SLazyCaptcha.Generator.Image;
+
+public interface ICaptchaImageOptionBuilder
 {
-    public interface ICaptchaImageOptionBuilder
-    {
-        CaptchaImageGeneratorOption Build();
-    }
+    CaptchaImageGeneratorOption Build();
 }

@@ -1,13 +1,10 @@
-﻿using System;
+﻿namespace DH.SLazyCaptcha.Storage;
 
-namespace Lazy.Captcha.Core.Storage
+public interface IStorage
 {
-    public interface IStorage
-    {
-        void Set(string key, string value, DateTimeOffset absoluteExpiration);
+    void Set(string key, string value, DateTimeOffset absoluteExpiration);
 
-        string Get(string key);
+    string Get(string key);
 
-        void Remove(string key);
-    }
+    void Remove(string key);
 }

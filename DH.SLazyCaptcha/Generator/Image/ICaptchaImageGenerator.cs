@@ -1,17 +1,11 @@
-﻿using Lazy.Captcha.Core.Generator.Image.Option;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DH.SLazyCaptcha.Generator.Image.Option;
 
-namespace Lazy.Captcha.Core.Generator.Image
+namespace DH.SLazyCaptcha.Generator.Image;
+
+/// <summary>
+/// 验证码生成器
+/// </summary>
+public interface ICaptchaImageGenerator
 {
-    /// <summary>
-    /// 验证码生成器
-    /// </summary>
-    public interface ICaptchaImageGenerator
-    {
-        byte[] Generate(string text, CaptchaImageGeneratorOption option);
-    }
+    byte[] Generate(string text, CaptchaImageGeneratorOption option);
 }
