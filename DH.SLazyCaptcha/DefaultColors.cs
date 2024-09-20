@@ -1,11 +1,17 @@
 ﻿using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DH.SLazyCaptcha;
+namespace Lazy.Captcha.Core
+{
+    public class DefaultColors
+    {
+        public static DefaultColors Instance = new DefaultColors();
 
-public class DefaultColors {
-    public static DefaultColors Instance = new DefaultColors();
-
-    public List<SKColor> Colors = new List<SKColor>
+        public List<SKColor> Colors = new List<SKColor>
         {
             SKColor.Parse("#0087ff"),
             SKColor.Parse("#339933"),
@@ -20,4 +26,5 @@ public class DefaultColors {
             SKColor.Parse("#0099cc"),
             SKColor.Parse("#003366"),
         };
+    }
 }

@@ -1,33 +1,38 @@
-﻿using DH.SLazyCaptcha.Storage.Caches;
+﻿using Lazy.Captcha.Core.Storage.Caches;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DH.SLazyCaptcha.Storage;
-
-public class MemeoryStorage : IStorage {
-    private MemoryCache Cache;
-    public string StoreageKeyPrefix { get; set; } = string.Empty;
-
-    public MemeoryStorage()
+namespace Lazy.Captcha.Core.Storage
+{
+    public class MemeoryStorage : IStorage
     {
-        Cache = MemoryCache.Default;
-    }
+        private MemoryCache Cache;
+        public string StoreageKeyPrefix { get; set; } = string.Empty;
 
-    private string WrapKey(string key)
-    {
-        return $"{StoreageKeyPrefix}{key}";
-    }
+        public MemeoryStorage()
+        {
+            Cache = MemoryCache.Default;
+        }
 
-    public string Get(string key)
-    {
-        return Cache.Get(WrapKey(key));
-    }
+        private string WrapKey(string key)
+        {
+            return $"{StoreageKeyPrefix}{key}";
+        }
 
-    public void Remove(string key)
-    {
-        Cache.Remove(WrapKey(key));
-    }
+        public string Get(string key)
+        {
+            return Cache.Get(WrapKey(key));
+        }
 
-    public void Set(string key, string value, DateTimeOffset absoluteExpiration)
-    {
-        Cache.Set(WrapKey(key), value, absoluteExpiration);
+        public void Remove(string key)
+        {
+            Cache.Remove(WrapKey(key));
+        }
+
+        public void Set(string key, string value, DateTimeOffset absoluteExpiration)
+        {
+            Cache.Set(WrapKey(key), value, absoluteExpiration);
+        }
     }
 }

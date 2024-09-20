@@ -1,88 +1,77 @@
-ï»¿using DH.SLazyCaptcha.Generator;
-using DH.SLazyCaptcha.Generator.Code;
-using DH.SLazyCaptcha.Storage;
-
-using Microsoft.AspNetCore.Http;
+using Lazy.Captcha.Core.Generator.Code;
+using Lazy.Captcha.Core.Generator.Image;
+using Lazy.Captcha.Core.Storage;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DH.SLazyCaptcha;
-
-public class DefaultCaptcha : ICaptcha {
-    protected CaptchaOptions _options;
-    protected IStorage _storage;
-    protected ICaptchaCodeGenerator _captchaCodeGenerator;
-    protected ICaptchaImageGenerator _captchaImageGenerator;
-
-    public DefaultCaptcha(IOptionsSnapshot<CaptchaOptions> options, IStorage storage)
+namespace Lazy.Captcha.Core
+{
+    public class DefaultCaptcha : ICaptcha
     {
-        _options = options.Value;
-        _storage = storage;
+        protected CaptchaOptions _options;
+        protected IStorage _storage;
+        protected ICaptchaCodeGenerator _captchaCodeGenerator;
+        protected ICaptchaImageGenerator _captchaImageGenerator;
 
-        ChangeOptions(_options);
-
-        _captchaCodeGenerator = new DefaultCaptchaCodeGenerator(_options.CaptchaType);
-        _captchaImageGenerator = new DefaultCaptchaImageGenerator();
-    }
-
-    // é€‰é¡¹æ›´æ–°
-    protected virtual void ChangeOptions(CaptchaOptions options)
-    {
-
-    }
-
-    /// <summary>
-    /// ä½¿ç”¨sessionåŠå›ºå®šKey
-    /// </summary>
-    /// <returns></returns>
-    public virtual CaptchaData Generate()
-    {
-        var captchaId = "ybbcode";
-
-        var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
-        var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
-
-        Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
-
-        return new CaptchaData(captchaId, code, image);
-    }
-
-    /// <summary>
-    /// ç”ŸæˆéªŒè¯ç 
-    /// </summary>
-    /// <param name="captchaId">éªŒè¯ç id</param>
-    /// <param name="expirySeconds">ç¼“å­˜æ—¶é—´ï¼Œæœªè®¾å®šåˆ™ä½¿ç”¨é…ç½®æ—¶é—´</param>
-    /// <returns></returns>
-    public virtual CaptchaData Generate(string captchaId, int? expirySeconds = null)
-    {
-        var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
-        var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
-        expirySeconds = expirySeconds.HasValue ? expirySeconds.Value : _options.ExpirySeconds;
-        _storage.Set(captchaId, code, DateTime.Now.AddSeconds(expirySeconds.Value).ToUniversalTime());
-
-        return new CaptchaData(captchaId, code, image);
-    }
-
-    /// <summary>
-    /// æ ¡éªŒ
-    /// </summary>
-    /// <param name="captchaId">éªŒè¯ç id</param>
-    /// <param name="code">ç”¨æˆ·è¾“å…¥çš„éªŒè¯ç </param>
-    /// <param name="removeIfSuccess">æ ¡éªŒæˆåŠŸæ—¶æ˜¯å¦ç§»é™¤ç¼“å­˜(ç”¨äºå¤šæ¬¡éªŒè¯)</param>
-    /// <param name="removeIfFail">æ ¡éªŒå¤±è´¥æ—¶æ˜¯å¦ç§»é™¤ç¼“å­˜</param>
-    /// <returns></returns>
-    public virtual bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true)
-    {
-        var val = _storage.Get(captchaId);
-        var comparisonType = _options.IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture;
-        var success = !string.IsNullOrWhiteSpace(code) &&
-                      !string.IsNullOrWhiteSpace(val) &&
-                      string.Equals(val, code, comparisonType);
-
-        if ((!success && removeIfFail) || (success && removeIfSuccess))
+        public DefaultCaptcha(IOptionsSnapshot<CaptchaOptions> options, IStorage storage)
         {
-            _storage.Remove(captchaId);
+            _options = options.Value;
+            _storage = storage;
+
+            ChangeOptions(_options);
+
+            _captchaCodeGenerator = new DefaultCaptchaCodeGenerator(_options.CaptchaType);
+            _captchaImageGenerator = new DefaultCaptchaImageGenerator();
         }
 
-        return success;
+        // Ñ¡Ïî¸üĞÂ
+        protected virtual void ChangeOptions(CaptchaOptions options)
+        {
+
+        }
+
+        /// <summary>
+        /// Éú³ÉÑéÖ¤Âë
+        /// </summary>
+        /// <param name="captchaId">ÑéÖ¤Âëid</param>
+        /// <param name="expirySeconds">»º´æÊ±¼ä£¬Î´Éè¶¨ÔòÊ¹ÓÃÅäÖÃÊ±¼ä</param>
+        /// <returns></returns>
+        public virtual CaptchaData Generate(string captchaId, int? expirySeconds = null)
+        {
+            var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
+            var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
+            expirySeconds = expirySeconds.HasValue ? expirySeconds.Value : _options.ExpirySeconds;
+            _storage.Set(captchaId, code, DateTime.Now.AddSeconds(expirySeconds.Value).ToUniversalTime());
+
+            return new CaptchaData(captchaId, code, image);
+        }
+
+        /// <summary>
+        /// Ğ£Ñé
+        /// </summary>
+        /// <param name="captchaId">ÑéÖ¤Âëid</param>
+        /// <param name="code">ÓÃ»§ÊäÈëµÄÑéÖ¤Âë</param>
+        /// <param name="removeIfSuccess">Ğ£Ñé³É¹¦Ê±ÊÇ·ñÒÆ³ı»º´æ(ÓÃÓÚ¶à´ÎÑéÖ¤)</param>
+        /// <param name="removeIfFail">Ğ£ÑéÊ§°ÜÊ±ÊÇ·ñÒÆ³ı»º´æ</param>
+        /// <returns></returns>
+        public virtual bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true)
+        {
+            var val = _storage.Get(captchaId);
+            var comparisonType = _options.IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture;
+            var success = !string.IsNullOrWhiteSpace(code) &&
+                          !string.IsNullOrWhiteSpace(val) &&
+                          string.Equals(val, code, comparisonType);
+
+            if ((!success && removeIfFail) || (success && removeIfSuccess))
+            {
+                _storage.Remove(captchaId);
+            }
+
+            return success;
+        }
     }
 }
