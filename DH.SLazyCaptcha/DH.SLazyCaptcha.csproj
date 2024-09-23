@@ -7,7 +7,7 @@
     <Description>DH框架基于SkiaSharp的验证码类库,仿EasyCaptcha和SimpleCaptcha。参考https://gitee.com/pojianbing/lazy-captcha</Description>
     <Company>湖北登灏科技有限公司</Company>
     <Copyright>©2020-2024 湖北登灏科技有限公司</Copyright>
-    <VersionPrefix>3.8</VersionPrefix>
+    <VersionPrefix>3.91</VersionPrefix>
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyyy.MMdd`))</VersionSuffix>
     <Version>$(VersionPrefix).$(VersionSuffix)</Version>
     <FileVersion>$(Version)</FileVersion>
@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
-    <PackageReference Include="DH.RateLimter" Version="3.8.2024.920-beta0840" />
+    <PackageReference Include="DH.RateLimter" Version="3.91.2024.923-beta0438" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
