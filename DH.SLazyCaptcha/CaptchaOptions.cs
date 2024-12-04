@@ -5,7 +5,7 @@ namespace DH.SLazyCaptcha;
 
 public class CaptchaOptions
 {
-    private const int DEFAULT_CODE_LENGTH = 4;
+    private const Int32 DEFAULT_CODE_LENGTH = 4;
     private CaptchaType _captchaType = CaptchaType.DEFAULT;
 
     /// <summary>
@@ -37,22 +37,27 @@ public class CaptchaOptions
     /// <summary>
     /// 验证码长度
     /// </summary>
-    public virtual int CodeLength { get; set; } = DEFAULT_CODE_LENGTH;
+    public virtual Int32 CodeLength { get; set; } = DEFAULT_CODE_LENGTH;
 
     /// <summary>
     /// 过期时长
     /// </summary>
-    public virtual int ExpirySeconds { get; set; } = 60;
+    public virtual Int32 ExpirySeconds { get; set; } = 60;
 
     /// <summary>
     /// code比较是否忽略大小写
     /// </summary>
-    public virtual bool IgnoreCase { get; set; } = true;
+    public virtual Boolean IgnoreCase { get; set; } = true;
 
     /// <summary>
     /// 存储键前缀
     /// </summary>
-    public virtual string StoreageKeyPrefix { get; set; }
+    public virtual String StoreageKeyPrefix { get; set; }
+
+    /// <summary>
+    /// 存储类型
+    /// </summary>
+    public virtual StoreType StoreType { get; set; } = StoreType.Session;
 
     /// <summary>
     /// 图片选项

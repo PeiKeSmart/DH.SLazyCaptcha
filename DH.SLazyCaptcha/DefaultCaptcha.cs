@@ -3,7 +3,10 @@ using DH.SLazyCaptcha.Generator.Image;
 using DH.SLazyCaptcha.Storage;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+
+using NewLife.Caching;
 
 namespace DH.SLazyCaptcha;
 
@@ -35,14 +38,20 @@ public class DefaultCaptcha : ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
-    public virtual CaptchaData Generate()
+    public virtual CaptchaData Generate(Int64 SId)
     {
         var captchaId = "ybbcode";
 
         var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
         var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
 
-        Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
+        if (_options.StoreType == StoreType.Session || SId <= 0)
+            Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
+        else
+        {
+            var cache = Pek.Webs.HttpContext.Current.RequestServices.GetRequiredService<ICacheProvider>().Cache;
+            cache.Set($"{SId}CaptchaCode", code, 5 * 30);
+        }
 
         return new CaptchaData(captchaId, code, image);
     }
@@ -53,11 +62,11 @@ public class DefaultCaptcha : ICaptcha
     /// <param name="captchaId">验证码id</param>
     /// <param name="expirySeconds">缓存时间，未设定则使用配置时间</param>
     /// <returns></returns>
-    public virtual CaptchaData Generate(string captchaId, int? expirySeconds = null)
+    public virtual CaptchaData Generate(String captchaId, Int32? expirySeconds = null)
     {
         var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
         var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
-        expirySeconds = expirySeconds.HasValue ? expirySeconds.Value : _options.ExpirySeconds;
+        expirySeconds = expirySeconds ?? _options.ExpirySeconds;
         _storage.Set(captchaId, code, DateTime.Now.AddSeconds(expirySeconds.Value).ToUniversalTime());
 
         return new CaptchaData(captchaId, code, image);

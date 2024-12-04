@@ -6,7 +6,7 @@ public interface ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
-    CaptchaData Generate();
+    CaptchaData Generate(Int64 SId);
 
     /// <summary>
     /// 生成验证码
@@ -14,7 +14,7 @@ public interface ICaptcha
     /// <param name="captchaId">验证码id</param>
     /// <param name="expirySeconds">缓存时间，未设定则使用配置时间</param>
     /// <returns></returns>
-    CaptchaData Generate(string captchaId, int? expirySeconds = null);
+    CaptchaData Generate(String captchaId, Int32? expirySeconds = null);
 
     /// <summary>
     /// 校验
@@ -24,5 +24,5 @@ public interface ICaptcha
     /// <param name="removeIfSuccess">校验成功时是否移除缓存(用于多次验证)</param>
     /// <param name="removeIfFail">校验失败时是否移除</param>
     /// <returns></returns>
-    bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true);
+    Boolean Validate(String captchaId, String code, Boolean removeIfSuccess = true, Boolean removeIfFail = true);
 }

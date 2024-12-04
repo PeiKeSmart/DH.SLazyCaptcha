@@ -2,9 +2,9 @@
 
 public interface IStorage
 {
-    void Set(string key, string value, DateTimeOffset absoluteExpiration);
+    void Set(String key, String value, DateTimeOffset absoluteExpiration);
 
-    string Get(string key);
+    String Get(String key);
 
-    void Remove(string key);
+    void Remove(String key);
 }
