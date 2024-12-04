@@ -9,6 +9,9 @@ using Microsoft.Extensions.Options;
 using NewLife.Caching;
 using NewLife.Log;
 
+using Pek.Configs;
+using Pek.Infrastructure;
+
 namespace DH.SLazyCaptcha;
 
 public class DefaultCaptcha : ICaptcha
@@ -52,7 +55,16 @@ public class DefaultCaptcha : ICaptcha
             Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
         else
         {
-            var cache = Pek.Webs.HttpContext.Current.RequestServices.GetRequiredService<ICacheProvider>().Cache;
+            ICache cache;
+            if (RedisSetting.Current.RedisEnabled)
+            {
+                cache = NewLife.Model.ObjectContainer.Provider.GetPekService<FullRedis>();
+            }
+            else
+            {
+                cache = Pek.Webs.HttpContext.Current.RequestServices.GetRequiredService<ICacheProvider>().Cache;
+            }
+            
             cache.Set($"{SId}CaptchaCode", code, 5 * 30);
         }
 
