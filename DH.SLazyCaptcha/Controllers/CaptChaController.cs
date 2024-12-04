@@ -1,7 +1,6 @@
 ﻿using DH.RateLimter;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 using Pek.Cookies;
 using Pek.Ids;
