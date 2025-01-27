@@ -46,7 +46,7 @@ public class DefaultCaptcha : ICaptcha
         var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
         var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
 
-        XTrace.WriteLine($"[DefaultCaptcha.Generate]验证码存储方式：{_options.StoreType}:{SId}");
+        XTrace.WriteLine($"[DefaultCaptcha.Generate]验证码存储方式：{_options.StoreType}:{SId}:{code}");
 
         if (_options.StoreType == StoreType.Session || SId <= 0)
             Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
