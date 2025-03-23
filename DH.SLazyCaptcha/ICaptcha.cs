@@ -6,7 +6,7 @@ public interface ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
-    CaptchaData Generate(Int64 SId);
+    CaptchaData GenerateSId(String SId);
 
     /// <summary>
     /// 生成验证码

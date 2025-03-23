@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using NewLife;
 using NewLife.Caching;
 using NewLife.Log;
 
@@ -39,7 +40,7 @@ public class DefaultCaptcha : ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
-    public virtual CaptchaData Generate(Int64 SId)
+    public virtual CaptchaData GenerateSId(String SId)
     {
         var captchaId = "ybbcode";
 
@@ -48,7 +49,7 @@ public class DefaultCaptcha : ICaptcha
 
         XTrace.WriteLine($"[DefaultCaptcha.Generate]验证码存储方式：{_options.StoreType}:{SId}:{code}");
 
-        if (_options.StoreType == StoreType.Session || SId <= 0)
+        if (_options.StoreType == StoreType.Session || SId.IsNullOrWhiteSpace())
             Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
         else
         {

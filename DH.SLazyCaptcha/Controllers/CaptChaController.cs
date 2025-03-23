@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using Pek.Cookies;
-using Pek.Ids;
+using Pek.Webs;
 
 namespace DH.SLazyCaptcha.Controllers;
 
@@ -29,23 +29,9 @@ public partial class CaptChaController : Controller
     [RateValve(Policy = Policy.Ip, Limit = 30, Duration = 60)]
     public IActionResult GetCheckCode()
     {
-        Int64 SId;
-        try
-        {
-            SId = PekCookies?.GetValue<Int64>("sid") ?? 0;
-            if (SId <= 0)
-            {
-                SId = IdHelper.GetSId();
-                PekCookies?.SetValue("sid", SId);
-            }
-        }
-        catch
-        {
-            SId = IdHelper.GetSId();
-            PekCookies?.SetValue("sid", SId);
-        }
+        var SId = DHWebHelper.FillDeviceId(Pek.Webs.HttpContext.Current);
 
-        var info = Captcha.Generate(SId);
+        var info = Captcha.GenerateSId(SId);
         var stream = new MemoryStream(info.Bytes);
         return File(stream, "image/gif");
     }
