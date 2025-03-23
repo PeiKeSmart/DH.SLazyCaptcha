@@ -40,6 +40,22 @@ public class DefaultCaptcha : ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
+    public virtual CaptchaData Generate()
+    {
+        var captchaId = "ybbcode";
+
+        var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
+        var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
+
+        Pek.Webs.HttpContext.Current.Session.SetString(captchaId, code);
+
+        return new CaptchaData(captchaId, code, image);
+    }
+
+    /// <summary>
+    /// 使用session及固定Key
+    /// </summary>
+    /// <returns></returns>
     public virtual CaptchaData GenerateSId(String SId)
     {
         var captchaId = "ybbcode";

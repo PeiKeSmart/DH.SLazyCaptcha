@@ -6,6 +6,12 @@ public interface ICaptcha
     /// 使用session及固定Key
     /// </summary>
     /// <returns></returns>
+    CaptchaData Generate();
+
+    /// <summary>
+    /// 使用session及固定Key
+    /// </summary>
+    /// <returns></returns>
     CaptchaData GenerateSId(String SId);
 
     /// <summary>
