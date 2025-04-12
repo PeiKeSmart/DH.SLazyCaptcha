@@ -87,7 +87,7 @@ public class DefaultCaptcha : ICaptcha
     {
         var (renderText, code) = _captchaCodeGenerator.Generate(_options.CodeLength);
         var image = _captchaImageGenerator.Generate(renderText, _options.ImageOption);
-        expirySeconds = expirySeconds ?? _options.ExpirySeconds;
+        expirySeconds ??= _options.ExpirySeconds;
         _storage.Set(captchaId, code, DateTime.Now.AddSeconds(expirySeconds.Value).ToUniversalTime());
 
         return new CaptchaData(captchaId, code, image);
@@ -101,13 +101,13 @@ public class DefaultCaptcha : ICaptcha
     /// <param name="removeIfSuccess">校验成功时是否移除缓存(用于多次验证)</param>
     /// <param name="removeIfFail">校验失败时是否移除缓存</param>
     /// <returns></returns>
-    public virtual bool Validate(string captchaId, string code, bool removeIfSuccess = true, bool removeIfFail = true)
+    public virtual Boolean Validate(String captchaId, String code, Boolean removeIfSuccess = true, Boolean removeIfFail = true)
     {
         var val = _storage.Get(captchaId);
         var comparisonType = _options.IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture;
-        var success = !string.IsNullOrWhiteSpace(code) &&
-                      !string.IsNullOrWhiteSpace(val) &&
-                      string.Equals(val, code, comparisonType);
+        var success = !String.IsNullOrWhiteSpace(code) &&
+                      !String.IsNullOrWhiteSpace(val) &&
+                      String.Equals(val, code, comparisonType);
 
         if ((!success && removeIfFail) || (success && removeIfSuccess))
         {
