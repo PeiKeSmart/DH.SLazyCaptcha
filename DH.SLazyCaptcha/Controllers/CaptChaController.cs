@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Pek.Cookies;
 using Pek.Webs;
 
 namespace DH.SLazyCaptcha.Controllers;
@@ -14,12 +13,10 @@ namespace DH.SLazyCaptcha.Controllers;
 public partial class CaptChaController : Controller
 {
     public readonly ICaptcha Captcha;
-    public readonly ICookie PekCookies;
 
-    public CaptChaController(ICaptcha _Captcha, ICookie pekCookies)
+    public CaptChaController(ICaptcha _Captcha)
     {
         Captcha = _Captcha;
-        PekCookies = pekCookies;
     }
 
     /// <summary>
