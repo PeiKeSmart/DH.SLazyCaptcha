@@ -1,7 +1,12 @@
 ﻿using DH.RateLimter;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using NewLife.Caching;
+
+using Pek.Helpers;
+using Pek.Models;
 using Pek.Webs;
 
 namespace DH.SLazyCaptcha.Controllers;
@@ -12,11 +17,13 @@ namespace DH.SLazyCaptcha.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public partial class CaptChaController : Controller
 {
-    public readonly ICaptcha Captcha;
+    private readonly ICaptcha Captcha;
+    private readonly ICacheProvider Cache;
 
-    public CaptChaController(ICaptcha _Captcha)
+    public CaptChaController(ICaptcha _Captcha, ICacheProvider cache)
     {
         Captcha = _Captcha;
+        Cache = cache;
     }
 
     /// <summary>
@@ -31,5 +38,34 @@ public partial class CaptChaController : Controller
         var info = Captcha.GenerateSId(SId);
         var stream = new MemoryStream(info.Bytes);
         return File(stream, "image/gif");
+    }
+
+    /// <summary>
+    /// 验证码
+    /// </summary>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpGet("GetVierificationCode")]
+    //[ApiSignature]
+    [RateValve(Policy = Policy.Ip, Limit = 600, Duration = 3600)]
+    public IActionResult GetVierificationCode()
+    {
+        var result = new DGResult();
+
+        var SId = DHWebHelper.FillDeviceId(Pek.Webs.HttpContext.Current);
+        var info = Captcha.GenerateSId(SId);
+        var code = info.Code;
+
+        var data = new
+        {
+            img = Convert.ToBase64String(info.Bytes),
+            uuid = Guid.NewGuid()
+        };
+
+        Cache.Cache.Set(data.uuid.ToString(), code, 300);
+
+        result.Code = StateCode.Ok;
+        result.Data = data;
+        return result;
     }
 }
