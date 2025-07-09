@@ -1,6 +1,5 @@
 ﻿using DH.RateLimter;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using NewLife.Caching;
@@ -44,9 +43,6 @@ public partial class CaptChaController : Controller
     /// 验证码
     /// </summary>
     /// <returns></returns>
-    [AllowAnonymous]
-    [HttpGet("GetVierificationCode")]
-    //[ApiSignature]
     [RateValve(Policy = Policy.Ip, Limit = 600, Duration = 3600)]
     public IActionResult GetVierificationCode()
     {
