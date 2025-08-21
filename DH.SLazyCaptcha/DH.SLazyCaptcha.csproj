@@ -43,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DH.RateLimter" Version="4.12.2025.707-beta0911" />
+    <PackageReference Include="DH.RateLimter" Version="4.14.2025.820-beta0741" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
