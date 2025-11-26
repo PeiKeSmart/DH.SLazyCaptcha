@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <RootNamespace>DH.SLazyCaptcha</RootNamespace>
     <AssemblyName>DH.SLazyCaptcha</AssemblyName>
     <AssemblyTitle>SixLabors验证码类库</AssemblyTitle>
     <Description>DH框架基于SkiaSharp的验证码类库,仿EasyCaptcha和SimpleCaptcha。参考https://gitee.com/pojianbing/lazy-captcha</Description>
     <Company>湖北登灏科技有限公司</Company>
-    <Copyright>©2020-2024 湖北登灏科技有限公司</Copyright>
-    <VersionPrefix>4.00</VersionPrefix>
+    <Copyright>©2020-2025 湖北登灏科技有限公司</Copyright>
+    <VersionPrefix>4.16</VersionPrefix>
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyyy.MMdd`))</VersionSuffix>
     <Version>$(VersionPrefix).$(VersionSuffix)</Version>
     <FileVersion>$(Version)</FileVersion>
@@ -43,13 +43,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DH.RateLimter" Version="4.14.2025.820-beta0741" />
+    <PackageReference Include="DH.RateLimter" Version="4.16.2025.1114-beta1006" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="3.119.0" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
   </ItemGroup>
 
   <ItemGroup>
