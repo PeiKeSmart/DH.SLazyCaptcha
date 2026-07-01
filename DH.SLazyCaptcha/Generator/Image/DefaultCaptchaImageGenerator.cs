@@ -240,12 +240,14 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator
             using (var paint = new SKPaint())
             {
                 paint.StrokeWidth = 1;
-                paint.TextSize = gd.FontSize;
                 paint.IsAntialias = true;
-                paint.Typeface = gd.Font;
                 paint.Color = gd.Color.WithAlpha((byte)(255 * gd.BlendPercentage));
-                paint.FakeBoldText = gd.TextBold;
-                canvas.DrawText(gd.Text, gd.Location.X, gd.Location.Y, paint);
+
+                using (var font = new SKFont(gd.Font, gd.FontSize))
+                {
+                    font.Embolden = gd.TextBold;
+                    canvas.DrawText(gd.Text, gd.Location.X, gd.Location.Y, font, paint);
+                }
             }
         });
     }
@@ -268,52 +270,52 @@ public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator
     /// <param name="width">验证码宽度</param>
     /// <param name="height">验证码高度</param>
     /// <param name="text">要绘制的文本</param>
-    /// <param name="font"></param>
-    /// <param name="fontSize"></param>
+    /// <param name="typeface">字体</param>
+    /// <param name="fontSize">字体大小</param>
     /// <returns>返回每个字符的位置</returns>
-    public virtual List<PointF> MeasureTextPositions(int width, int height, string text, SKTypeface font, float fontSize)
+    public virtual List<PointF> MeasureTextPositions(int width, int height, string text, SKTypeface typeface, float fontSize)
     {
         using (var paint = new SKPaint())
         {
             paint.StrokeWidth = 1;
-            paint.TextSize = fontSize;
             paint.IsAntialias = true;
-            paint.Typeface = font;
 
-            var result = new List<PointF>();
-            if (string.IsNullOrWhiteSpace(text)) return result;
-
-            // 计算每个字符宽度
-            var charWidths = new List<float>();
-            foreach (var s in text)
+            using (var font = new SKFont(typeface, fontSize))
             {
-                var charWidth = paint.MeasureText(s.ToString());
-                charWidths.Add(charWidth);
+                var result = new List<PointF>();
+                if (string.IsNullOrWhiteSpace(text)) return result;
+
+                // 计算每个字符宽度
+                var charWidths = new List<float>();
+                foreach (var s in text)
+                {
+                    var charWidth = font.MeasureText(s.ToString(), paint);
+                    charWidths.Add(charWidth);
+                }
+
+                // 计算每个字符x坐标
+                var currentX = 0.0f;
+                var charTotalWidth = charWidths.Sum(x => x);
+                var charXs = new List<float>();
+
+                // 计算字体高度（取最高的）
+                font.MeasureText(text, out var textBounds, paint);
+                var fontHeight = (Int32)textBounds.Height;
+
+                for (var i = 0; i < text.Count(); i++)
+                {
+                    // 根据文字宽度比例，计算文字包含框宽度
+                    var wrapperWidth = charWidths[i] * 1.0f / charTotalWidth * width;
+                    // 文字在包含框内的padding
+                    var padding = (wrapperWidth - charWidths[i]) / 2;
+                    var textX = currentX + padding;
+                    var textY = (height + fontHeight) / 2;  // 文字的纵坐标
+                    result.Add(new PointF(textX, textY));
+                    currentX += wrapperWidth;
+                }
+
+                return result;
             }
-
-            // 计算每个字符x坐标
-            var currentX = 0.0f;
-            var charTotalWidth = charWidths.Sum(x => x);
-            var charXs = new List<float>();
-
-            // 计算字体高度（取最高的）
-            var textBounds = new SKRect();
-            paint.MeasureText(text, ref textBounds);
-            var fontHeight = (int)textBounds.Height;
-
-            for (var i = 0; i < text.Count(); i++)
-            {
-                // 根据文字宽度比例，计算文字包含框宽度
-                var wrapperWidth = charWidths[i] * 1.0f / charTotalWidth * width;
-                // 文字在包含框内的padding
-                var padding = (wrapperWidth - charWidths[i]) / 2;
-                var textX = currentX + padding;
-                var textY = (height + fontHeight) / 2;  // 文字的纵坐标
-                result.Add(new PointF(textX, textY));
-                currentX += wrapperWidth;
-            }
-
-            return result;
         }
     }
 
